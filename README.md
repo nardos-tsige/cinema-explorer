@@ -2,7 +2,7 @@
 
 A movie and TV series discovery web application built with **HTML, CSS, JavaScript**, and **Vite**, powered by The Movie Database (TMDB) API.
 
-**Live Demo:** [cinema-explorer.vercel.app](https://cinema-explorer.vercel.app)
+**Live Demo:** [cinema-explorer.vercel.app](https://cinema-explorer-ashy.vercel.app/)
 
 ---
 
