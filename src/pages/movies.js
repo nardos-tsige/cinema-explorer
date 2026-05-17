@@ -38,13 +38,13 @@ export async function renderMoviesPage() {
         `;
     } catch (error) {
         console.error('Movies page error:', error);
-        return '<div class="error">Failed to load movies page</div>';
+        return '<div class="error"><i class="fas fa-exclamation-triangle"></i> Failed to load movies page</div>';
     }
 }
 
 function renderMoviesGrid(movies) {
     if (!movies || !movies.length) {
-        return '<p class="loading">No movies found</p>';
+        return '<p class="loading"><i class="fas fa-spinner fa-spin"></i> No movies found</p>';
     }
     
     const cardsHtml = movies.map(movie => {
@@ -52,7 +52,7 @@ function renderMoviesGrid(movies) {
         return card.render();
     }).join('');
     
-    return `<div class="cards-grid">${cardsHtml}</div>`;
+    return `<div class="cards-grid" id="moviesCardsGrid">${cardsHtml}</div>`;
 }
 
 async function handleGenreSelect(genreId) {
@@ -87,13 +87,33 @@ async function refreshMoviesContent() {
             pagination.attachEventListeners();
         }
         
+        attachMovieCardListeners();
+        
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
         console.error('Refresh error:', error);
     }
 }
 
+function attachMovieCardListeners() {
+    document.querySelectorAll('#moviesCardsGrid .card').forEach(card => {
+        card.removeEventListener('click', handleMovieCardClick);
+        card.addEventListener('click', handleMovieCardClick);
+    });
+}
+
+function handleMovieCardClick(e) {
+    const card = e.currentTarget;
+    const id = card.dataset.id;
+    if (id) {
+        window.dispatchEvent(new CustomEvent('navigate', { 
+            detail: { path: `/movie/${id}` } 
+        }));
+    }
+}
+
 export function attachMoviesEventListeners() {
+    
     const hero = new HeroCarousel([], 'movie');
     hero.attachEventListeners();
     
@@ -102,4 +122,6 @@ export function attachMoviesEventListeners() {
     
     const pagination = new Pagination(currentPage, totalPages, handlePageChange);
     pagination.attachEventListeners();
+    
+    attachMovieCardListeners();
 }

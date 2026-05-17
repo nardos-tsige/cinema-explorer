@@ -11,13 +11,18 @@ export class Card {
         const subtitle = this.getItemSubtitle();
         const rating = this.getItemRating();
         
+        let routeType = this.type;
+        if (this.type === 'movie') routeType = 'movie';
+        else if (this.type === 'series') routeType = 'series';
+        else if (this.type === 'person') routeType = 'person';
+        
         return `
-            <div class="card" data-id="${this.item.id}" data-type="${this.type}">
+            <div class="card" data-id="${this.item.id}" data-type="${routeType}" style="cursor: pointer;">
                 <img src="${imagePath}" alt="${title}" loading="lazy" onerror="this.src='https://via.placeholder.com/500x750?text=No+Image'">
                 <div class="card-info">
                     <h3 class="card-title">${title}</h3>
                     ${subtitle ? `<p class="card-subtitle">${subtitle}</p>` : ''}
-                    ${rating ? `<div class="card-rating">⭐ ${rating.toFixed(1)}</div>` : ''}
+                    ${rating ? `<div class="card-rating"><i class="fas fa-star"></i> ${rating.toFixed(1)}</div>` : ''}
                 </div>
             </div>
         `;

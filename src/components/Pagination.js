@@ -12,15 +12,15 @@ export class Pagination {
         
         return `
             <div class="pagination">
-                <button class="first" ${this.currentPage === 1 ? 'disabled' : ''}>« First</button>
-                <button class="prev" ${this.currentPage === 1 ? 'disabled' : ''}>‹ Prev</button>
+                <button class="first" ${this.currentPage === 1 ? 'disabled' : ''}><i class="fas fa-angle-double-left"></i> First</button>
+                <button class="prev" ${this.currentPage === 1 ? 'disabled' : ''}><i class="fas fa-angle-left"></i> Prev</button>
                 ${pages.map(page => `
                     <button class="${page === this.currentPage ? 'active' : ''}" data-page="${page}">
                         ${page}
                     </button>
                 `).join('')}
-                <button class="next" ${this.currentPage === this.totalPages ? 'disabled' : ''}>Next ›</button>
-                <button class="last" ${this.currentPage === this.totalPages ? 'disabled' : ''}>Last »</button>
+                <button class="next" ${this.currentPage === this.totalPages ? 'disabled' : ''}>Next <i class="fas fa-angle-right"></i></button>
+                <button class="last" ${this.currentPage === this.totalPages ? 'disabled' : ''}>Last <i class="fas fa-angle-double-right"></i></button>
             </div>
         `;
     }

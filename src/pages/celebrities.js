@@ -24,7 +24,7 @@ export async function renderCelebritiesPage() {
             ${hero.render()}
             <section class="section">
                 <div class="section-header">
-                    <h2 class="section-title">🎭 All Celebrities</h2>
+                    <h2 class="section-title"><i class="fas fa-star"></i> All Celebrities</h2>
                 </div>
                 <div id="celebritiesGrid">${renderCelebritiesGrid(celebrities)}</div>
                 <div id="pagination">${pagination.render()}</div>
@@ -32,13 +32,13 @@ export async function renderCelebritiesPage() {
         `;
     } catch (error) {
         console.error('Celebrities page error:', error);
-        return '<div class="error">Failed to load celebrities page</div>';
+        return '<div class="error"><i class="fas fa-exclamation-triangle"></i> Failed to load celebrities page</div>';
     }
 }
 
 function renderCelebritiesGrid(celebrities) {
     if (!celebrities || !celebrities.length) {
-        return '<p class="loading">No celebrities found</p>';
+        return '<p class="loading"><i class="fas fa-spinner fa-spin"></i> No celebrities found</p>';
     }
     
     const cardsHtml = celebrities.map(celebrity => {
@@ -46,7 +46,7 @@ function renderCelebritiesGrid(celebrities) {
         return card.render();
     }).join('');
     
-    return `<div class="cards-grid">${cardsHtml}</div>`;
+    return `<div class="cards-grid" id="celebritiesCardsGrid">${cardsHtml}</div>`;
 }
 
 async function handlePageChange(page) {
@@ -72,9 +72,28 @@ async function refreshCelebritiesContent() {
             pagination.attachEventListeners();
         }
         
+        attachCelebrityCardListeners();
+        
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
         console.error('Refresh error:', error);
+    }
+}
+
+function attachCelebrityCardListeners() {
+    document.querySelectorAll('#celebritiesCardsGrid .card').forEach(card => {
+        card.removeEventListener('click', handleCelebrityCardClick);
+        card.addEventListener('click', handleCelebrityCardClick);
+    });
+}
+
+function handleCelebrityCardClick(e) {
+    const card = e.currentTarget;
+    const id = card.dataset.id;
+    if (id) {
+        window.dispatchEvent(new CustomEvent('navigate', { 
+            detail: { path: `/person/${id}` } 
+        }));
     }
 }
 
@@ -84,4 +103,6 @@ export function attachCelebritiesEventListeners() {
     
     const pagination = new Pagination(currentPage, totalPages, handlePageChange);
     pagination.attachEventListeners();
+    
+    attachCelebrityCardListeners();
 }

@@ -8,7 +8,7 @@ export class HeroCarousel {
     }
     
     render() {
-        if (!this.items.length) return '<div class="hero loading">Loading...</div>';
+        if (!this.items.length) return '<div class="hero loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
         
         return `
             <div class="hero">
@@ -18,8 +18,8 @@ export class HeroCarousel {
                             ${this.items.map(item => this.createSlide(item)).join('')}
                         </div>
                     </div>
-                    <button class="carousel-btn prev" id="prevBtn">❮</button>
-                    <button class="carousel-btn next" id="nextBtn">❯</button>
+                    <button class="carousel-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
         `;
@@ -36,7 +36,7 @@ export class HeroCarousel {
                 <img src="${imageUrl}" alt="${title}" onerror="this.src='https://via.placeholder.com/1920x500?text=Cinema+Explorer'">
                 <div class="slide-overlay">
                     <h2 class="slide-title">${title}</h2>
-                    ${rating ? `<div class="slide-rating">⭐ ${rating}/10</div>` : ''}
+                    ${rating ? `<div class="slide-rating"><i class="fas fa-star"></i> ${rating}/10</div>` : ''}
                 </div>
             </div>
         `;

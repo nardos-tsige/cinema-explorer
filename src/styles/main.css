@@ -366,3 +366,34 @@ body {
         font-size: 1.2rem;
     }
 }
+/* Icon spacing */
+.nav-links a i,
+.logo i,
+.sidebar h3 i,
+.genre-item i,
+.pagination button i,
+.footer i,
+.details-meta i,
+.info-card h3 i {
+    margin-right: 8px;
+}
+
+/* Loading spinner */
+.fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Star rating color */
+.fa-star {
+    color: #ff8c00;
+}
+
+/* Pagination icons */
+.pagination button i {
+    margin-right: 4px;
+}

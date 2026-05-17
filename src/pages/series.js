@@ -38,13 +38,13 @@ export async function renderSeriesPage() {
         `;
     } catch (error) {
         console.error('Series page error:', error);
-        return '<div class="error">Failed to load series page</div>';
+        return '<div class="error"><i class="fas fa-exclamation-triangle"></i> Failed to load series page</div>';
     }
 }
 
 function renderSeriesGrid(series) {
     if (!series || !series.length) {
-        return '<p class="loading">No series found</p>';
+        return '<p class="loading"><i class="fas fa-spinner fa-spin"></i> No series found</p>';
     }
     
     const cardsHtml = series.map(show => {
@@ -52,7 +52,7 @@ function renderSeriesGrid(series) {
         return card.render();
     }).join('');
     
-    return `<div class="cards-grid">${cardsHtml}</div>`;
+    return `<div class="cards-grid" id="seriesCardsGrid">${cardsHtml}</div>`;
 }
 
 async function handleGenreSelect(genreId) {
@@ -87,9 +87,28 @@ async function refreshSeriesContent() {
             pagination.attachEventListeners();
         }
         
+        attachSeriesCardListeners();
+        
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
         console.error('Refresh error:', error);
+    }
+}
+
+function attachSeriesCardListeners() {
+    document.querySelectorAll('#seriesCardsGrid .card').forEach(card => {
+        card.removeEventListener('click', handleSeriesCardClick);
+        card.addEventListener('click', handleSeriesCardClick);
+    });
+}
+
+function handleSeriesCardClick(e) {
+    const card = e.currentTarget;
+    const id = card.dataset.id;
+    if (id) {
+        window.dispatchEvent(new CustomEvent('navigate', { 
+            detail: { path: `/series/${id}` } 
+        }));
     }
 }
 
@@ -102,4 +121,6 @@ export function attachSeriesEventListeners() {
     
     const pagination = new Pagination(currentPage, totalPages, handlePageChange);
     pagination.attachEventListeners();
+    
+    attachSeriesCardListeners();
 }

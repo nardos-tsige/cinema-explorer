@@ -8,20 +8,20 @@ export class Sidebar {
     
     render() {
         if (!this.genres.length) {
-            return '<aside class="sidebar"><h3>Genres</h3><p>Loading...</p></aside>';
+            return '<aside class="sidebar"><h3><i class="fas fa-tags"></i> Genres</h3><p><i class="fas fa-spinner fa-spin"></i> Loading...</p></aside>';
         }
         
         return `
             <aside class="sidebar">
-                <h3>${this.type === 'movie' ? '🎬 Movie' : '📺 TV'} Genres</h3>
+                <h3><i class="fas ${this.type === 'movie' ? 'fa-film' : 'fa-tv'}"></i> ${this.type === 'movie' ? 'Movie' : 'TV'} Genres</h3>
                 <ul class="genre-list">
                     <li class="genre-item ${!this.selectedGenreId ? 'active' : ''}" data-genre-id="">
-                        All ${this.type === 'movie' ? 'Movies' : 'Series'}
+                        <i class="fas fa-list"></i> All ${this.type === 'movie' ? 'Movies' : 'Series'}
                     </li>
                     ${this.genres.map(genre => `
                         <li class="genre-item ${this.selectedGenreId === genre.id ? 'active' : ''}" 
                             data-genre-id="${genre.id}">
-                            ${genre.name}
+                            <i class="fas fa-tag"></i> ${genre.name}
                         </li>
                     `).join('')}
                 </ul>

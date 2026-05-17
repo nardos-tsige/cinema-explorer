@@ -22,13 +22,13 @@ export async function renderHomePage() {
         
         return `
             ${hero.render()}
-            ${renderSection('🔥 Trending Movies', movies, 'movie')}
-            ${renderSection('📺 Trending Series', series, 'series')}
-            ${renderSection('⭐ Trending Celebrities', people, 'person')}
+            ${renderSection('<i class="fas fa-fire"></i> Trending Movies', movies, 'movie')}
+            ${renderSection('<i class="fas fa-tv"></i> Trending Series', series, 'series')}
+            ${renderSection('<i class="fas fa-star"></i> Trending Celebrities', people, 'person')}
         `;
     } catch (error) {
         console.error('Home page error:', error);
-        return '<div class="error">Failed to load content. Please check your API key.</div>';
+        return '<div class="error"><i class="fas fa-exclamation-triangle"></i> Failed to load content. Please check your API key.</div>';
     }
 }
 
@@ -45,13 +45,37 @@ function renderSection(title, items, type) {
             <div class="section-header">
                 <h2 class="section-title">${title}</h2>
             </div>
-            <div class="cards-grid">${cardsHtml}</div>
+            <div class="cards-grid" data-section="${type}">${cardsHtml}</div>
         </section>
     `;
 }
 
-// ADD THIS FUNCTION - It was missing!
 export function attachHomeEventListeners() {
+    
+    attachCardClickListeners();
+    
     const hero = new HeroCarousel([], 'movie');
     hero.attachEventListeners();
+}
+
+function attachCardClickListeners() {
+    document.querySelectorAll('.card').forEach(card => {
+        
+        card.removeEventListener('click', handleCardClick);
+        card.addEventListener('click', handleCardClick);
+    });
+}
+
+function handleCardClick(e) {
+    
+    const card = e.currentTarget;
+    const id = card.dataset.id;
+    const type = card.dataset.type;
+    
+    if (id && type) {
+        console.log(`Navigating to /${type}/${id}`);
+        window.dispatchEvent(new CustomEvent('navigate', { 
+            detail: { path: `/${type}/${id}` } 
+        }));
+    }
 }
